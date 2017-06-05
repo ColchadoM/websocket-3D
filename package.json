@@ -1,0 +1,22 @@
+{
+  "name": "websocket-3D",
+  "version": "1.0.0",
+  "description": "Testing websockets and threejs.",
+  "scripts": {
+    "start": "grunt serve"
+  },
+  "engines": {
+    "node": "~4.1.1"
+  },
+  "dependencies": {
+    "ws": "^3.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2",
+    "time-grunt": "^1.4.0"
+  }
+}
