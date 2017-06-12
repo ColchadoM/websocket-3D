@@ -7,6 +7,11 @@
 var scene, camera, renderer;
 var canvas;
 
+var geometry;
+var material;
+
+var meshes = {};
+
 function setup3D () {
   scene = new THREE.Scene();
 
@@ -25,6 +30,9 @@ function setup3D () {
   renderer.setPixelRatio(window.devicePixelRatio);
 
   $(window).on('resize', onWindowResize);
+
+  geometry = new THREE.BoxGeometry(8, 1, 2);
+  material = new THREE.MeshNormalMaterial();
 
   // Begin animate
   animate();
@@ -48,7 +56,7 @@ function animate () {
  *******************/
 
 // WebSocket
-var wsURL = 'ws://localhost:1881';
+var wsURL = 'ws://192.168.15.7:1881';
 var connection;
 
 function setupWebSocket () {
@@ -79,6 +87,44 @@ function onConnectionMessage (event) {
   var payload = event.data;
   var message = JSON.parse(payload);
   console.log(message);
+
+  var type = message.type;
+  var data = message.data;
+
+  if (type === 'newInput') {
+    createNewMesh(data);
+  }
+  else if (type === 'angle') {
+    onAngleReceived(data.from, data.angle);
+  }
+  else if (type === 'disconnected') {
+    onClientDisconnected(data);
+  }
+}
+
+function createNewMesh (idConnection) {
+  var mesh = new THREE.Mesh(geometry, material);
+  mesh.position.z = -5;
+  mesh.position.x = (Math.random() * 10) - 5;
+  mesh.position.y = (Math.random() * 10) - 5;
+  scene.add(mesh);
+
+  meshes[idConnection] = mesh;
+}
+
+function onAngleReceived (from, angle) {
+  var mesh = meshes[from];
+  if (mesh) {
+    mesh.rotation.z = angle * (Math.PI / 180.0) * -1.0;
+  }
+}
+
+function onClientDisconnected (from) {
+  var mesh = meshes[from];
+  if (mesh) {
+    scene.remove(mesh);
+    delete meshes[data];
+  }
 }
 
 $(document).ready(function () {

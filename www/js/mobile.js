@@ -28,7 +28,7 @@ function onDeviceOrientation (event) {
  *******************/
 
 // WebSocket
-var wsURL = 'ws://192.168.43.36:1881';
+var wsURL = 'ws://192.168.15.7:1881';
 var connection;
 
 function setupWebSocket () {
@@ -59,7 +59,7 @@ $(document).ready(function () {
 
   if (window.DeviceOrientationEvent) {
     window.addEventListener('deviceorientation', onDeviceOrientation);
-    
+
     setupWebSocket();
   }
   else {
